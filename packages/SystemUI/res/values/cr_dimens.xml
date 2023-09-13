@@ -178,4 +178,8 @@
     <!-- Island notification -->
     <dimen name="island_icon_size">48dp</dimen>
     <dimen name="island_side_margin">12dp</dimen>
+
+    <!-- Brightness bar percentage  -->
+    <dimen name="bb_percentage_margin_left">6dp</dimen>
+    <dimen name="bb_percentage_margin_right">0dp</dimen>
 </resources>

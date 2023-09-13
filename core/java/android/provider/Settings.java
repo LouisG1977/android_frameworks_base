@@ -7177,6 +7177,12 @@ public final class Settings {
          */
         public static final String NOTIF_PANEL_MAX_NOTIF_CONFIG = "notif_panel_max_notif_cofig";
 
+         /**
+         * Whether to show/hide text percentage view on brightness bar
+         * @hide
+         */
+         public static final String SHOW_BRIGHTNESS_BAR_PERCENTAGE = "show_brightness_bar_percentage";
+
         /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
@@ -7316,6 +7322,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(SCREEN_FLASH_NOTIFICATION);
             PRIVATE_SETTINGS.add(SCREEN_FLASH_NOTIFICATION_COLOR);
             PRIVATE_SETTINGS.add(DEFAULT_DEVICE_FONT_SCALE);
+            PRIVATE_SETTINGS.add(SHOW_BRIGHTNESS_BAR_PERCENTAGE);
         }
 
         /**
