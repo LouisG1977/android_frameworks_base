@@ -67,9 +67,6 @@ public class QSAnimator implements QSHost.Callback, PagedTileLayout.PageListener
         OnAttachStateChangeListener, TunerService.Tunable {
 
     private static final String TAG = "QSAnimator";
-
-    public static final String QS_TILE_UI_STYLE =
-            "system:" + Settings.System.QS_TILE_UI_STYLE;
             
     public static final String QS_WIDGETS_ENABLED =
             "system:" + "qs_widgets_enabled";
@@ -148,7 +145,6 @@ public class QSAnimator implements QSHost.Callback, PagedTileLayout.PageListener
     private final TunerService mTunerService;
     private boolean mShowCollapsedOnKeyguard;
     private int mQQSTop;
-    private boolean isA11Style;
     private boolean mQsWidgetsEnabled;
 
     private int[] mTmpLoc1 = new int[2];
@@ -229,7 +225,7 @@ public class QSAnimator implements QSHost.Callback, PagedTileLayout.PageListener
 
     @Override
     public void onViewAttachedToWindow(@NonNull View view) {
-        mTunerService.addTunable(this, QS_TILE_UI_STYLE, QS_WIDGETS_ENABLED);
+        mTunerService.addTunable(this, QS_WIDGETS_ENABLED);
         updateAnimators();
         setCurrentPosition();
         mQuickQSPanelController.mMediaHost.addVisibilityChangeListener(mMediaHostVisibilityListener);
@@ -244,10 +240,6 @@ public class QSAnimator implements QSHost.Callback, PagedTileLayout.PageListener
     @Override
     public void onTuningChanged(String key, String newValue) {
         switch (key) {
-            case QS_TILE_UI_STYLE:
-                isA11Style =
-                     TunerService.parseInteger(newValue, 0) != 0;
-                break;
             case QS_WIDGETS_ENABLED:
                 mQsWidgetsEnabled =
                      TunerService.parseIntegerSwitch(newValue, false);
@@ -382,8 +374,8 @@ public class QSAnimator implements QSHost.Callback, PagedTileLayout.PageListener
 
                     // Icons
                     translateContent(
-                            isA11Style ? quickTileView.getIconWithBackground() : quickTileView.getIcon(),
-                            isA11Style ? tileView.getIconWithBackground() : tileView.getIcon(),
+                            quickTileView.getIcon(),
+                            tileView.getIcon(),
                             view,
                             xOffset,
                             yOffset,
@@ -425,16 +417,13 @@ public class QSAnimator implements QSHost.Callback, PagedTileLayout.PageListener
                     // Therefore, we use a quadratic interpolator animator to animate the alpha
                     // for tiles in QQS to match.
                     quadraticInterpolatorBuilder
-                            .addFloat(isA11Style ? quickTileView.getLabelContainer() :
-                                    quickTileView.getSecondaryLabel(), "alpha", 0, 1);
+                            addFloat(quickTileView.getSecondaryLabel(), "alpha", 0, 1);
                     nonFirstPageAlphaBuilder
-                            .addFloat(isA11Style ? quickTileView.getLabelContainer() :
-                                    quickTileView.getSecondaryLabel(), "alpha", 0, 0);
+                            .addFloat(quickTileView.getSecondaryLabel(), "alpha", 0, 0);
 
                     mAnimatedQsViews.add(tileView);
                     mAllViews.add(quickTileView);
-                    mAllViews.add(isA11Style ? quickTileView.getLabelContainer() :
-                            quickTileView.getSecondaryLabel());
+                    mAllViews.add(quickTileView.getSecondaryLabel());
                 } else if (!isIconInAnimatedRow(count)) {
                     // Pretend there's a corresponding QQS tile (for the position) that we are
                     // expanding from.
@@ -453,10 +442,8 @@ public class QSAnimator implements QSHost.Callback, PagedTileLayout.PageListener
                     mOtherFirstPageTilesHeightAnimator.addView(tileView);
                     tileView.setClipChildren(true);
                     tileView.setClipToPadding(true);
-                    firstPageBuilder.addFloat(isA11Style ? tileView.getLabelContainer() :
-                            tileView.getSecondaryLabel(), "alpha", 0, 1);
-                    mAllViews.add(isA11Style ? tileView.getLabelContainer() :
-                            tileView.getSecondaryLabel());
+                    firstPageBuilder.addFloat(tileView.getSecondaryLabel(), "alpha", 0, 1);
+                    mAllViews.add(tileView.getSecondaryLabel());
                 }
 
                 QSTileView quickTileView = mQuickQSPanelController.getTileView(tile);
