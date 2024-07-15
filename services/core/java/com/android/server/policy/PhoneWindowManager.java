@@ -5821,6 +5821,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     // Note that we need to make a copy of the key event here because the
                     // original key event will be recycled when we return.
                     mBroadcastWakeLock.acquire();
+                    mWindowWakeUpPolicy.wakeUpFromWakeGesture();
                     Message msg = mHandler.obtainMessage(MSG_DISPATCH_MEDIA_KEY_WITH_WAKE_LOCK,
                             new KeyEvent(event));
                     msg.setAsynchronous(true);
